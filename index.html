@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#635bff">
+<title>StudyMate — Trợ lý học tập</title>
+<style>
+:root{--bg:#f5f6fc;--card:#fff;--ink:#20223a;--muted:#777b95;--line:#e9eaf3;--primary:#635bff;--soft:#eeedff;--green:#18a879;--shadow:0 12px 35px #30346b12}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(120deg,#5148e8,#837bff);color:white;padding:28px max(5vw,20px) 34px}
+.top{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{font-weight:850;font-size:21px;letter-spacing:.2px}.date{opacity:.85;font-size:13px}
+.hero{max-width:1100px;margin:30px auto 0}.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.15;margin:0 0 8px}.hero p{margin:0;opacity:.9}
+nav{max-width:1100px;margin:-18px auto 25px;padding:8px;background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);display:flex;gap:5px;overflow:auto}
+nav button{border:0;background:transparent;color:var(--muted);padding:11px 16px;border-radius:11px;font:inherit;font-weight:650;white-space:nowrap;cursor:pointer}
+nav button.active{background:var(--soft);color:var(--primary)}
+main{max-width:1100px;margin:auto;padding:0 20px 50px}.view{display:none}.view.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);min-width:0}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}
+h2{font-size:19px;margin:0 0 15px}h3{font-size:16px;margin:0 0 8px}.muted{color:var(--muted)}.stats{display:flex;align-items:center;gap:14px}.stat-icon{width:44px;height:44px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:22px}.stat strong{font-size:24px;display:block;line-height:1.15}.stat small{color:var(--muted)}
+input,textarea,select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:11px;font:inherit;color:var(--ink);background:white;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #635bff18}
+textarea{resize:vertical;min-height:130px}.row{display:flex;gap:9px;align-items:center}.row>*{min-width:0}.row input{flex:1}
+.btn{border:0;border-radius:11px;background:var(--primary);color:white;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}.btn:hover{filter:brightness(.96)}.btn.secondary{background:var(--soft);color:var(--primary)}.btn.danger{background:#fff0f0;color:#d34c4c}
+.task{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task input{width:17px;height:17px;accent-color:var(--primary)}.task.done span{text-decoration:line-through;color:#a1a3b5}.task span{flex:1;overflow-wrap:anywhere}.tag{font-size:11px;padding:4px 8px;border-radius:20px;background:#f0f1f8;color:#666b84}
+.timer{text-align:center;padding:12px 0}.time{font-size:clamp(48px,9vw,76px);font-weight:800;letter-spacing:-3px;font-variant-numeric:tabular-nums}.timer-mode{color:var(--muted);font-weight:650;margin-bottom:8px}.timer-actions{display:flex;justify-content:center;gap:9px;margin-top:15px}
+.progress{height:9px;background:#eeeff6;border-radius:10px;overflow:hidden}.progress>div{height:100%;background:var(--primary);width:0%;transition:width .2s}
+.flashcard{min-height:190px;border:1px dashed #c8c5ff;background:#f8f7ff;border-radius:16px;display:grid;place-items:center;text-align:center;padding:25px;cursor:pointer}.flashcard strong{font-size:23px}.flashcard small{display:block;color:var(--muted);margin-top:12px}
+.empty{text-align:center;padding:22px;color:var(--muted)}.subject{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.subject:last-child{border:0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:720px){.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.top{align-items:flex-start}.date{text-align:right}nav{margin-left:12px;margin-right:12px}main{padding-left:13px;padding-right:13px}.card{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><div class="brand">✦ StudyMate</div><div class="date" id="today"></div></div>
+ <div class="hero"><h1>Học tập thông minh hơn mỗi ngày.</h1><p>Lập kế hoạch, tập trung và theo dõi tiến độ của bạn.</p></div>
+</header>
+<nav>
+ <button class="active" data-view="home">⌂ Tổng quan</button><button data-view="tasks">✓ Công việc</button><button data-view="focus">◷ Tập trung</button><button data-view="notes">▤ Ghi chú</button><button data-view="cards">▧ Flashcard</button>
+</nav>
+<main>
+<section class="view active" id="home"><div class="grid">
+ <div class="card span-4"><div class="stats"><div class="stat-icon">📚</div><div class="stat"><strong id="taskCount">0</strong><small>Nhiệm vụ cần làm</small></div></div></div>
+ <div class="card span-4"><div class="stats"><div class="stat-icon">🎯</div><div class="stat"><strong id="doneCount">0</strong><small>Nhiệm vụ hoàn thành</small></div></div></div>
+ <div class="card span-4"><div class="stats"><div class="stat-icon">⏱️</div><div class="stat"><strong id="sessionCount">0</strong><small>Phiên tập trung hôm nay</small></div></div></div>
+ <div class="card span-7"><h2>Tiến độ hôm nay</h2><div class="row" style="justify-content:space-between;margin-bottom:9px"><span class="muted">Hoàn thành công việc</span><b id="percent">0%</b></div><div class="progress"><div id="progressBar"></div></div><p class="muted" id="encourage" style="margin:13px 0 0">Bắt đầu từ một việc nhỏ nhé!</p></div>
+ <div class="card span-5"><h2>Gợi ý học tập 💡</h2><p class="muted" style="margin:0">Chia bài học thành những phần nhỏ. Học tập trung 25 phút, nghỉ 5 phút và tự kiểm tra kiến thức sau mỗi phần.</p></div>
+ <div class="card span-12"><h2>Việc cần ưu tiên</h2><div id="homeTasks" class="muted">Chưa có công việc nào.</div><button class="btn secondary" style="margin-top:12px" onclick="showView('tasks')">Quản lý công việc →</button></div>
+ </div></section>
+<section class="view" id="tasks"><div class="grid"><div class="card span-12"><h2>Danh sách công việc</h2><div class="row" style="margin-bottom:10px"><input id="taskInput" placeholder="Ví dụ: Ôn tập Toán chương 2..." maxlength="120"><select id="priority" style="max-width:130px"><option value="Bình thường">Bình thường</option><option value="Ưu tiên">Ưu tiên</option></select><button class="btn" onclick="addTask()">Thêm</button></div><div id="taskList"></div></div></div></section>
+<section class="view" id="focus"><div class="grid"><div class="card span-7"><h2>Đồng hồ Pomodoro</h2><div class="timer"><div class="timer-mode" id="timerMode">Thời gian tập trung</div><div class="time" id="time">25:00</div><div class="timer-actions"><button class="btn" id="timerToggle" onclick="toggleTimer()">Bắt đầu</button><button class="btn secondary" onclick="resetTimer()">Đặt lại</button></div><div class="timer-actions"><button class="btn secondary" onclick="setTimer(25,'Tập trung')">25 phút học</button><button class="btn secondary" onclick="setTimer(5,'Nghỉ ngắn')">5 phút nghỉ</button><button class="btn secondary" onclick="setTimer(15,'Nghỉ dài')">15 phút nghỉ</button></div></div></div><div class="card span-5"><h2>Mẹo tập trung</h2><p class="muted">• Để điện thoại xa tầm tay.</p><p class="muted">• Chỉ chọn một mục tiêu cho mỗi phiên.</p><p class="muted">• Đứng dậy, uống nước khi nghỉ.</p><p class="muted">• Ghi lại điều đã học sau phiên tập trung.</p></div></div></section>
+<section class="view" id="notes"><div class="grid"><div class="card span-12"><h2>Ghi chú nhanh 📝</h2><p class="muted">Ghi lại công thức, ý tưởng hoặc nội dung cần nhớ. Nội dung được lưu trên thiết bị này.</p><textarea id="notesText" placeholder="Hôm nay mình đã học được..."></textarea><div class="row" style="justify-content:space-between;margin-top:10px"><small class="muted" id="saveStatus">Tự động lưu</small><button class="btn secondary" onclick="clearNotes()">Xóa ghi chú</button></div></div></div></section>
+<section class="view" id="cards"><div class="grid"><div class="card span-6"><h2>Bộ thẻ ghi nhớ</h2><input id="front" placeholder="Mặt trước — câu hỏi / thuật ngữ" style="margin-bottom:9px"><input id="back" placeholder="Mặt sau — câu trả lời / định nghĩa" style="margin-bottom:9px"><button class="btn" onclick="addCard()">Thêm flashcard</button><p class="muted" style="font-size:13px">Ví dụ: “Quang hợp là gì?” → “Quá trình cây xanh tổng hợp chất hữu cơ...”</p><div id="cardList"></div></div><div class="card span-6"><h2>Ôn tập</h2><div class="flashcard" id="flashcard" onclick="flipCard()"><div><strong id="flashText">Chưa có thẻ nào</strong><small id="flashHint">Thêm thẻ ở bên trái để bắt đầu</small></div></div><div class="timer-actions"><button class="btn secondary" onclick="prevCard()">← Trước</button><button class="btn" onclick="nextCard()">Tiếp →</button></div><p class="muted" id="cardPosition" style="text-align:center"></p></div></div></section>
+</main><footer>StudyMate · Công cụ học tập cá nhân · Dữ liệu được lưu trên trình duyệt của bạn</footer>
+<script>
+const $=id=>document.getElementById(id);
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let tasks=load('sm_tasks',[]),cards=load('sm_cards',[]),cardIndex=0,flipped=false;
+$('today').textContent=new Intl.DateTimeFormat('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
+function showView(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===v));}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+function renderTasks(){let list=$('taskList');list.innerHTML='';if(!tasks.length)list.innerHTML='<div class="empty">Chưa có công việc. Hãy thêm nhiệm vụ đầu tiên!</div>';tasks.forEach(t=>{let d=document.createElement('div');d.className='task'+(t.done?' done':'');let cb=document.createElement('input');cb.type='checkbox';cb.checked=t.done;cb.onchange=()=>{t.done=cb.checked;save('sm_tasks',tasks);render()};let s=document.createElement('span');s.textContent=t.text;let tag=document.createElement('small');tag.className='tag';tag.textContent=t.priority;let del=document.createElement('button');del.className='btn danger';del.textContent='×';del.title='Xóa';del.onclick=()=>{tasks=tasks.filter(x=>x.id!==t.id);save('sm_tasks',tasks);render()};d.append(cb,s,tag,del);list.append(d)});let pending=tasks.filter(t=>!t.done);$('homeTasks').innerHTML='';if(!pending.length)$('homeTasks').textContent='Bạn đã hoàn thành mọi việc! 🎉';pending.slice(0,5).forEach(t=>{let p=document.createElement('p');p.textContent='• '+t.text;p.style.margin='7px 0';$('homeTasks').append(p)})}
+function addTask(){let v=$('taskInput').value.trim();if(!v)return;tasks.unshift({id:Date.now(),text:v,priority:$('priority').value,done:false});save('sm_tasks',tasks);$('taskInput').value='';render()}
+$('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTask()});
+function render(){renderTasks();let done=tasks.filter(t=>t.done).length,p=tasks.length?Math.round(done/tasks.length*100):0;$('taskCount').textContent=tasks.length-done;$('doneCount').textContent=done;$('percent').textContent=p+'%';$('progressBar').style.width=p+'%';$('encourage').textContent=p===100&&tasks.length?'Xuất sắc! Bạn đã hoàn thành mục tiêu hôm nay 🎉':'Cứ tiến từng bước nhỏ, bạn đang làm rất tốt!';$('sessionCount').textContent=load('sm_sessions',0);renderCards()}
+let seconds=1500,initial=1500,running=false,interval=null,mode='Tập trung';
+function paintTimer(){$('time').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');$('timerMode').textContent=mode}
+function setTimer(min,m){pauseTimer();seconds=initial=min*60;mode=m;paintTimer();$('timerToggle').textContent='Bắt đầu'}
+function pauseTimer(){running=false;clearInterval(interval);$('timerToggle').textContent='Tiếp tục'}
+function toggleTimer(){if(running){pauseTimer();return}running=true;$('timerToggle').textContent='Tạm dừng';interval=setInterval(()=>{seconds--;paintTimer();if(seconds<=0){pauseTimer();if(mode==='Tập trung'){save('sm_sessions',load('sm_sessions',0)+1);render()}alert(mode+' đã kết thúc!');}},1000)}
+function resetTimer(){pauseTimer();seconds=initial;paintTimer()}
+function addCard(){let f=$('front').value.trim(),b=$('back').value.trim();if(!f||!b)return;cards.push({f,b});save('sm_cards',cards);$('front').value='';$('back').value='';renderCards()}
+function renderCards(){$('cardList').innerHTML='';cards.forEach((c,i)=>{let p=document.createElement('div');p.className='subject';let s=document.createElement('span');s.textContent=c.f;let del=document.createElement('button');del.className='btn danger';del.textContent='Xóa';del.onclick=()=>{cards.splice(i,1);cardIndex=Math.min(cardIndex,Math.max(0,cards.length-1));save('sm_cards',cards);renderCards()};p.append(s,del);$('cardList').append(p)});showCard()}
+function showCard(){flipped=false;if(!cards.length){$('flashText').textContent='Chưa có thẻ nào';$('flashHint').textContent='Thêm thẻ ở bên trái để bắt đầu';$('cardPosition').textContent='';return}$('flashText').textContent=cards[cardIndex].f;$('flashHint').textContent='Nhấn vào thẻ để xem đáp án';$('cardPosition').textContent=(cardIndex+1)+' / '+cards.length}
+function flipCard(){if(!cards.length)return;flipped=!flipped;$('flashText').textContent=flipped?cards[cardIndex].b:cards[cardIndex].f;$('flashHint').textContent=flipped?'Nhấn để xem câu hỏi':'Nhấn vào thẻ để xem đáp án'}
+function nextCard(){if(cards.length){cardIndex=(cardIndex+1)%cards.length;showCard()}}
+function prevCard(){if(cards.length){cardIndex=(cardIndex-1+cards.length)%cards.length;showCard()}}
+$('notesText').value=load('sm_notes','');$('notesText').addEventListener('input',()=>{save('sm_notes',$('notesText').value);$('saveStatus').textContent='Đã lưu ✓'});
+function clearNotes(){if(confirm('Bạn có chắc muốn xóa toàn bộ ghi chú?')){$('notesText').value='';save('sm_notes','');$('saveStatus').textContent='Đã xóa'}}
+render();paintTimer();
+</script>
+</body></html>
